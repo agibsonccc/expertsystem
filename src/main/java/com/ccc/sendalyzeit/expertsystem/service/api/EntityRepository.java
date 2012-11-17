@@ -5,7 +5,11 @@ import java.util.List;
 import com.ccc.sendalyzeit.expertsystem.model.Entity;
 
 public interface EntityRepository {
+	
+	public void dropEntityDb();
+	
 	public void createEntityDb();
+	
 	public void addEntity(Entity entity);
 	
 	public List<Entity> entities();

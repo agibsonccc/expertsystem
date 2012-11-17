@@ -56,5 +56,9 @@ public class EntityRepositoryImpl implements EntityRepository {
 			log.info("Created entity database");
 		}
 	}
+	public void dropEntityDb() {
+		mongoTemplate.dropCollection(Entity.class);
+		log.info("Dropped entity db");
+	}
 	
 }

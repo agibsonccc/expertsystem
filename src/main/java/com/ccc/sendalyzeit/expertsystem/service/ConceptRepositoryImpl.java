@@ -1,6 +1,9 @@
 package com.ccc.sendalyzeit.expertsystem.service;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -28,12 +31,19 @@ public class ConceptRepositoryImpl implements ConceptRepository {
 	}
 
 	public Concept findByName(String name) {
-		return mongoTemplate.findOne(Query.query(Criteria.where(name)), Concept.class);
+		return mongoTemplate.findOne(Query.query(Criteria.where("name").is(name)), Concept.class);
 	}
 
 	public Collection<Concept> conceptsForEntity(Entity entity) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Concept> firstConcepts=mongoTemplate.find(Query.query(Criteria.where("first").is(entity)),Concept.class);
+		List<Concept> secondConcepts=mongoTemplate.find(Query.query(Criteria.where("second").is(entity)),Concept.class);
+		Set<Concept> concepts = new HashSet<Concept>();
+		if(firstConcepts!=null)
+			concepts.addAll(firstConcepts);
+		if(secondConcepts!=null)
+			concepts.addAll(secondConcepts);
+		return concepts;
+			
 	}
 	@PostConstruct
 	public void init() {
@@ -44,7 +54,7 @@ public class ConceptRepositoryImpl implements ConceptRepository {
 	}
 
 	public void deleteEntity(long id) {
-		mongoTemplate.findAndRemove(Query.query(Criteria.where(String.valueOf(id)	)), Concept.class);
+		mongoTemplate.findAndRemove(Query.query(Criteria.where(String.valueOf("id")).is(id)), Concept.class);
 	}
 
 	public void addConcept(Concept concept) {
@@ -57,5 +67,12 @@ public class ConceptRepositoryImpl implements ConceptRepository {
 			log.info("Created concept database");
 		}
 	}
+
+	public void dropConceptDb() {
+		mongoTemplate.dropCollection(Concept.class);
+		log.info("Dropped concept db");
+	}
+	
+	
 
 }
