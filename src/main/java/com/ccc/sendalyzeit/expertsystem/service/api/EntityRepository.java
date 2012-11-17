@@ -6,6 +6,7 @@ import com.ccc.sendalyzeit.expertsystem.model.Entity;
 
 public interface EntityRepository {
 
+	public void addEntity(Entity entity);
 	
 	public List<Entity> entities();
 	

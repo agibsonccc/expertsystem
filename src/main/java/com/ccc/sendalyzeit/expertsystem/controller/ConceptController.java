@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,6 +25,11 @@ public class ConceptController {
 	@ExceptionHandler(Exception.class)
 	public @ResponseBody Map<String,String> exception(Exception e) {
 		return Collections.singletonMap("status","internal error occurred");
+	}
+	@RequestMapping(method=RequestMethod.PUT)
+	public @ResponseBody Map<String,String> insert(@RequestBody Concept concept) {
+		conceptRepository.addConcept(concept);
+		return Collections.singletonMap("status","inserted");
 	}
 	
 	@RequestMapping(method=RequestMethod.GET,value="/{id}")
