@@ -7,6 +7,8 @@ import com.ccc.sendalyzeit.expertsystem.model.Entity;
 
 public interface ConceptRepository {
 
+	public void createConceptDb();
+	
 	public void addConcept(Concept concept);
 	
 	public void deleteEntity(long id);

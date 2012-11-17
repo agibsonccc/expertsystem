@@ -2,8 +2,11 @@ package com.ccc.sendalyzeit.expertsystem.service;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -15,11 +18,15 @@ import com.ccc.sendalyzeit.expertsystem.service.api.EntityRepository;
 public class EntityRepositoryImpl implements EntityRepository {
 	@Inject
 	private MongoTemplate mongoTemplate;
+	
+	private static Logger log=LoggerFactory.getLogger(EntityRepositoryImpl.class);
 	public Entity findById(long id) {
 		return mongoTemplate.findById(id, Entity.class);
 	}
-	
-	
+	@PostConstruct
+	public void init() {
+		createEntityDb();
+	}
 
 	public Entity findByName(String name) {
 		Entity entity= mongoTemplate.findOne(Query.query(Criteria.where(name)), Entity.class);
@@ -43,5 +50,11 @@ public class EntityRepositoryImpl implements EntityRepository {
 	public void addEntity(Entity entity) {
 		mongoTemplate.insert(entity);
 	}
-
+	public void createEntityDb() {
+		if(!mongoTemplate.collectionExists(Entity.class)) {
+			mongoTemplate.createCollection(Entity.class);
+			log.info("Created entity database");
+		}
+	}
+	
 }

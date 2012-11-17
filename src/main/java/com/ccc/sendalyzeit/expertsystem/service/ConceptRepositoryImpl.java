@@ -2,8 +2,11 @@ package com.ccc.sendalyzeit.expertsystem.service;
 
 import java.util.Collection;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -18,6 +21,8 @@ public class ConceptRepositoryImpl implements ConceptRepository {
 	@Inject
 	private MongoTemplate mongoTemplate;
 
+	
+	private static Logger log=LoggerFactory.getLogger(ConceptRepositoryImpl.class);
 	public Concept findById(long id) {
 		return mongoTemplate.findById(id, Concept.class);
 	}
@@ -30,7 +35,10 @@ public class ConceptRepositoryImpl implements ConceptRepository {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	@PostConstruct
+	public void init() {
+		createConceptDb();
+	}
 	public Collection<Concept> concepts() {
 		return mongoTemplate.findAll(Concept.class);
 	}
@@ -41,6 +49,13 @@ public class ConceptRepositoryImpl implements ConceptRepository {
 
 	public void addConcept(Concept concept) {
 		mongoTemplate.insert(concept);
+	}
+
+	public void createConceptDb() {
+		if(!mongoTemplate.collectionExists(Concept.class)) {
+			mongoTemplate.createCollection(Concept.class);
+			log.info("Created concept database");
+		}
 	}
 
 }
