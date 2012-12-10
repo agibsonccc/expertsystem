@@ -3,24 +3,25 @@ package com.ccc.sendalyzeit.expertsystem.service.api;
 import java.util.Collection;
 
 import com.ccc.sendalyzeit.expertsystem.model.Concept;
-import com.ccc.sendalyzeit.expertsystem.model.Entity;
-
+import com.ccc.sendalyzeit.expertsystem.model.SemanticEntity;
+/**
+ * DAO for concepts
+ * @author Adam Gibson
+ *
+ */
 public interface ConceptRepository {
 
-	public void dropConceptDb();
-	
-	public void createConceptDb();
 	
 	public void addConcept(Concept concept);
 	
-	public void deleteEntity(long id);
+	public void deleteConcept(Long id);
 	
 	public Collection<Concept> concepts();
 	
-	public Concept findById(long id);
+	public Concept findById(Long id);
 	
-	public Concept findByName(String name);
+	public Collection<Concept> findByName(String name);
 	
-	public Collection<Concept> conceptsForEntity(Entity entity);
+	public Collection<Concept> conceptsForSemanticEntity(SemanticEntity entity);
 	
 }

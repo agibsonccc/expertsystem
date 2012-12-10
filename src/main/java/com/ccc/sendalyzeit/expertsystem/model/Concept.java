@@ -2,20 +2,43 @@ package com.ccc.sendalyzeit.expertsystem.model;
 
 import java.io.Serializable;
 
-public class Concept implements Serializable {
+import com.github.jmkgreen.morphia.annotations.Embedded;
+import com.github.jmkgreen.morphia.annotations.Entity;
+import com.github.jmkgreen.morphia.annotations.Id;
+
+/**
+ * A concept ties two entities together.
+ * A typical example could be works(employee,business)
+ * @author Adam Gibson
+ *
+ */
+@Entity("concept")
+public class Concept  implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7354330136901440154L;
+	@Id
+	private long id=0L;
 
-	private long id;
-	
 	private String name;
-	
-	private Entity first;
-	
-	private Entity second;
+	@Embedded
+	private SemanticEntity first;
+	@Embedded
+	private SemanticEntity second;
+
+
+	public Concept(long id, String name, SemanticEntity first,
+			SemanticEntity second) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.first = first;
+		this.second = second;
+	}
+
+	public Concept() {}
 
 	public long getId() {
 		return id;
@@ -33,22 +56,23 @@ public class Concept implements Serializable {
 		this.name = name;
 	}
 
-	public Entity getFirst() {
+	public SemanticEntity getFirst() {
 		return first;
 	}
 
-	public void setFirst(Entity first) {
+	public void setFirst(SemanticEntity first) {
 		this.first = first;
 	}
 
-	public Entity getSecond() {
+	public SemanticEntity getSecond() {
 		return second;
 	}
 
-	public void setSecond(Entity second) {
+	public void setSecond(SemanticEntity second) {
 		this.second = second;
 	}
 
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -94,7 +118,6 @@ public class Concept implements Serializable {
 		return "Concept [id=" + id + ", name=" + name + ", first=" + first
 				+ ", second=" + second + "]";
 	}
-	
-	
+
 	
 }

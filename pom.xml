@@ -1,12 +1,13 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.ccc.sendalyzeit</groupId>
-  <artifactId>expertsystem</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>war</packaging>
-  <name>Expert System API</name>
-  <description>Expert System</description>
-  <repositories>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.ccc.sendalyzeit</groupId>
+	<artifactId>expertsystem</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+	<name>Expert System API</name>
+	<description>Expert System</description>
+	<repositories>
 		<repository>
 			<id>springtestmvc</id>
 			<name>spring-test-mvc</name>
@@ -209,7 +210,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.google.api-client</groupId>
 			<artifactId>google-api-client</artifactId>
@@ -245,6 +246,10 @@
 				<exclusion>
 					<artifactId>commons-logging-api</artifactId>
 					<groupId>commons-logging</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jackson-asl</artifactId>
+					<groupId>org.codehaus.jackson</groupId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -360,6 +365,31 @@
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-mongodb</artifactId>
 			<version>1.1.1.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security.oauth</groupId>
+			<artifactId>spring-security-oauth2</artifactId>
+			<version>1.0.0.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.jmkgreen.morphia</groupId>
+			<artifactId>morphia-logging-slf4j</artifactId>
+			<version>1.00</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.jmkgreen.morphia</groupId>
+			<artifactId>morphia-entityscanner-plug</artifactId>
+			<version>1.00</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.jmkgreen.morphia</groupId>
+			<artifactId>morphia-validation</artifactId>
+			<version>1.00</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ccc.sendalyzeit</groupId>
+			<artifactId>textanalyticsclient</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 </project>

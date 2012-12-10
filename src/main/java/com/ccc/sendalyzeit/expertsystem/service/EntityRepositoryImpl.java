@@ -7,58 +7,70 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Repository;
 
-import com.ccc.sendalyzeit.expertsystem.model.Entity;
+import com.ccc.sendalyzeit.expertsystem.model.SemanticEntity;
 import com.ccc.sendalyzeit.expertsystem.service.api.EntityRepository;
+import com.github.jmkgreen.morphia.Morphia;
+import com.github.jmkgreen.morphia.dao.BasicDAO;
+import com.mongodb.Mongo;
+
 @Repository("entityRepo")
-public class EntityRepositoryImpl implements EntityRepository {
-	@Inject
-	private MongoTemplate mongoTemplate;
+//NEEDS TO BE HERE DUE TO ERROR IN PLAY/MORPHIA LOGGING SUPPORT. SETUP FOR LOGGING
+//HAPPENS HERE. PUT THIS ON ANY AND ALL DAOS THAT HAVE TO DO WITH MORPHIA.
+@DependsOn("morphiainit")
+public class EntityRepositoryImpl extends BasicDAO<SemanticEntity, Long>
+		implements EntityRepository {
 	
 	private static Logger log=LoggerFactory.getLogger(EntityRepositoryImpl.class);
-	public Entity findById(long id) {
-		return mongoTemplate.findById(id, Entity.class);
+	@Inject
+	public EntityRepositoryImpl(Morphia morphia, Mongo mongo) {
+		super(SemanticEntity.class,mongo, morphia, "semantic");
 	}
+
 	@PostConstruct
 	public void init() {
-		createEntityDb();
+		getDatastore().getCollection(SemanticEntity.class);
+		log.info("Created database for Entity");
+
+	}
+	@Override
+	public void addSemanticEntity(SemanticEntity entity) {
+		entity.setId((long)Math.random());
+		super.save(entity);
 	}
 
-	public Entity findByName(String name) {
-		Entity entity= mongoTemplate.findOne(Query.query(Criteria.where(name)), Entity.class);
-		return entity;
+	@Override
+	public List<SemanticEntity> entities() {
+		return super.find().asList();
 	}
 
-
-
-	public void deleteEntity(long id) {
-		mongoTemplate.findAndRemove(Query.query(Criteria.where(String.valueOf(id))),Entity.class);
+	@Override
+	public SemanticEntity findById(Long id) {
+		return ds.get(SemanticEntity.class, id);
 	}
 
-
-
-	public List<Entity> entities() {
-		return mongoTemplate.findAll(Entity.class);
+	@Override
+	public List<SemanticEntity> findByName(String name) {
+		return this.ds.find(name, SemanticEntity.class).asList();
 	}
 
+	@Override
+	public void deleteSemanticEntity(Long id) {
+		SemanticEntity e = findById(id);
+		if (e != null)
+			super.delete(e);
+	}
 
+	@Override
+	public List<SemanticEntity> findByNameAndType(String name, String type) {
+		return ds.find(SemanticEntity.class).filter("name", name).filter("type", type).asList();
+	}
 
-	public void addEntity(Entity entity) {
-		mongoTemplate.insert(entity);
+	@Override
+	public List<SemanticEntity> findByType(String type) {
+		return ds.find(SemanticEntity.class).filter("type", type).asList();
 	}
-	public void createEntityDb() {
-		if(!mongoTemplate.collectionExists(Entity.class)) {
-			mongoTemplate.createCollection(Entity.class);
-			log.info("Created entity database");
-		}
-	}
-	public void dropEntityDb() {
-		mongoTemplate.dropCollection(Entity.class);
-		log.info("Dropped entity db");
-	}
-	
+
 }
