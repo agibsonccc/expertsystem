@@ -234,7 +234,11 @@
 			</exclusions>
 		</dependency>
 
-
+  <dependency>
+            <groupId>org.springframework.webflow</groupId>
+            <artifactId>spring-webflow</artifactId>
+            <version>2.3.1.RELEASE</version>
+        </dependency>
 
 
 		<dependency>
@@ -357,10 +361,10 @@
 			<version>3.1.2.RELEASE</version>
 		</dependency>
 		<dependency>
-			<groupId>org.mongodb</groupId>
-			<artifactId>mongo-java-driver</artifactId>
-			<version>2.9.3</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-mongodb</artifactId>
